@@ -11,7 +11,10 @@
     <div id="app">
       {{num}}
       <app-header v-on:pass="logText"></app-header>
-      <app-content v-on:increase="increaseNumber" v-bind:propsdata="num"></app-content>
+      <app-content
+        v-on:increase="increaseNumber"
+        v-bind:propsdata="num"
+      ></app-content>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
