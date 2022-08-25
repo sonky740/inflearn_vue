@@ -1,11 +1,25 @@
 <template>
   <div>
     <ul>
-      <li v-for="(item, i) in todoItems" v-bind:key="item" class="shadow">
-        {{ item }}
+      <li
+        v-for="(todoItem, i) in propsdata"
+        v-bind:key="todoItem.item"
+        class="shadow"
+      >
         <button
           type="button"
-          v-on:click="removeTodo(item, i)"
+          class="checkBtn"
+          v-bind:class="{ checkBtnCompleted: todoItem.completed }"
+          v-on:click="toggleComplete(todoItem, i)"
+        >
+          <i class="fas fa-check"></i>
+        </button>
+        <span v-bind:class="{ textCompleted: todoItem.completed }">
+          {{ todoItem.item }}
+        </span>
+        <button
+          type="button"
+          v-on:click="removeTodo(todoItem, i)"
           class="removeBtn"
         >
           <i class="fas fa-trash-alt"></i>
@@ -17,23 +31,13 @@
 
 <script>
 export default {
-  data: function () {
-    return {
-      todoItems: [],
-    };
-  },
-  created: function () {
-    if (localStorage.length > 0) {
-      for (let i = 0; i < localStorage.length; i++) {
-        this.todoItems.push(localStorage.key(i));
-      }
-    }
-  },
+  props: ['propsdata'],
   methods: {
-    removeTodo: function (item) {
-      localStorage.removeItem(item);
-      // this.todoItems.splice(i, 1);
-      this.todoItems = this.todoItems.filter((items) => items !== item);
+    removeTodo: function (todoItem) {
+      this.$emit('removeItem', todoItem);
+    },
+    toggleComplete: function (todoItem, i) {
+      this.$emit('toggleItem', todoItem, i);
     },
   },
 };
@@ -65,6 +69,8 @@ li {
 }
 
 .checkBtn {
+  border: none;
+  background: transparent;
   line-height: 45px;
   color: #62acde;
   margin-right: 5px;
@@ -76,5 +82,6 @@ li {
 
 .textCompleted {
   text-decoration: line-through;
+  opacity: 0.4;
 }
 </style>
