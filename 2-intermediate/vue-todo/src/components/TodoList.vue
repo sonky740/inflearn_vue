@@ -1,31 +1,31 @@
 <template>
   <div>
-    <ul>
+    <transition-group name="list" tag="ul">
       <li
         v-for="(todoItem, i) in propsdata"
-        v-bind:key="todoItem.item"
+        :key="todoItem.item"
         class="shadow"
       >
         <button
           type="button"
           class="checkBtn"
-          v-bind:class="{ checkBtnCompleted: todoItem.completed }"
-          v-on:click="toggleComplete(todoItem, i)"
+          :class="{ checkBtnCompleted: todoItem.completed }"
+          @click="toggleComplete(todoItem, i)"
         >
           <i class="fas fa-check"></i>
         </button>
-        <span v-bind:class="{ textCompleted: todoItem.completed }">
+        <span :class="{ textCompleted: todoItem.completed }">
           {{ todoItem.item }}
         </span>
         <button
           type="button"
-          v-on:click="removeTodo(todoItem, i)"
+          @click="removeTodo(todoItem, i)"
           class="removeBtn"
         >
           <i class="fas fa-trash-alt"></i>
         </button>
       </li>
-    </ul>
+    </transition-group>
   </div>
 </template>
 
@@ -83,5 +83,19 @@ li {
 .textCompleted {
   text-decoration: line-through;
   opacity: 0.4;
+}
+
+/* transition */
+.list-enter-active {
+  transition: all .3s;
+}
+.list-leave-active {
+  transition: all .2s;
+}
+
+.list-enter,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
