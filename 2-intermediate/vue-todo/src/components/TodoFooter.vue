@@ -12,7 +12,7 @@ export default {
     return {};
   },
   methods: {
-    clearTodo: function () {
+    clearTodo() {
       this.$emit('clearAll');
     },
   },
