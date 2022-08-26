@@ -8,12 +8,9 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  },
   methods: {
     clearTodo() {
-      this.$emit('clearAll');
+      this.$store.commit('clearAllItems');
     },
   },
 };
