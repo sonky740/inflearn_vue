@@ -2,7 +2,7 @@
   <div>
     <transition-group name="list" tag="ul">
       <li
-        v-for="(todoItem, i) in this.$store.state.todoItems"
+        v-for="(todoItem, i) in this.todoItems"
         :key="todoItem.item"
         class="shadow"
       >
@@ -10,7 +10,7 @@
           type="button"
           class="checkBtn"
           :class="{ checkBtnCompleted: todoItem.completed }"
-          @click="toggleComplete(todoItem, i)"
+          @click="toggleComplete({ todoItem, i })"
         >
           <i class="fas fa-check"></i>
         </button>
@@ -30,14 +30,20 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
+
 export default {
   methods: {
-    removeTodo(todoItem) {
-      this.$store.commit('removeOneItem', todoItem);
-    },
-    toggleComplete(todoItem, i) {
-      this.$store.commit('toggleOneItem', { todoItem, i });
-    },
+    ...mapMutations({
+      removeTodo: 'removeOneItem',
+      toggleComplete: 'toggleOneItem',
+    }),
+  },
+  computed: {
+    // ...mapGetters(['storedTodoItems']),
+    ...mapGetters({
+      todoItems: 'storedTodoItems',
+    }),
   },
 };
 </script>
