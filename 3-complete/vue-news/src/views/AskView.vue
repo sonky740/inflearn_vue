@@ -1,30 +1,26 @@
 <template>
   <div>
     <ul>
-      <li v-for="item in ask" :key="item.id">
-        {{ item.title }}
+      <li v-for="item in fetchedAsk" :key="item.id">
+        <router-link :to="`/item/${item.id}`">{{ item.title }}</router-link>
+        <small>
+          {{ item.time_ago }} by
+          <router-link :to="`/user/${item.user}`">{{ item.user }}</router-link>
+        </small>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { fetchAskList } from '../api';
+import { mapGetters } from 'vuex';
 
 export default {
-  data() {
-    return {
-      ask: [],
-    };
+  computed: {
+    ...mapGetters(['fetchedAsk']),
   },
   created() {
-    fetchAskList()
-      .then((response) => {
-        this.ask = response.data;
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
+    this.$store.dispatch('FETCH_ASK');
   },
 };
 </script>
