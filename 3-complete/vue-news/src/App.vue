@@ -23,6 +23,20 @@ body {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  color: #42b883;
+  text-decoration: underline;
+}
+
+a.router-link-exact-active {
+  text-decoration: underline;
+}
+
 /* .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;

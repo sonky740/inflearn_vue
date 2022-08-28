@@ -14,7 +14,7 @@ export default {
     }
   },
   created() {
-    const userName = this.$router.currentRoute.params.id;
+    const userName = this.$route.params.id;
     this.$store.dispatch('FETCH_USER', userName);
   },
 };

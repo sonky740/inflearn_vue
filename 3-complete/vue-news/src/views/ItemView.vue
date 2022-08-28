@@ -31,7 +31,7 @@ export default {
     ...mapGetters(['fetchedItem']),
   },
   created() {
-    const itemId = this.$router.currentRoute.params.id;
+    const itemId = this.$route.params.id;
     this.$store.dispatch('FETCH_ITEM', itemId);
   },
 };
