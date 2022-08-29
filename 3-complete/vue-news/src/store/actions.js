@@ -1,41 +1,18 @@
-import {
-  fetchAskList,
-  fetchJobsList,
-  fetchNewsList,
-  fetchUserInfo,
-  fetchItemInfo,
-} from '../api/index';
+import { fetchList, fetchUserInfo, fetchItemInfo } from '../api/index';
 
 export default {
-  FETCH_NEWS(context) {
-    fetchNewsList()
+  FETCH_LIST(context, pageName) {
+    return fetchList(pageName)
       .then((response) => {
-        context.commit('SET_NEWS', response.data);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  },
-  FETCH_JOBS(context) {
-    fetchJobsList()
-      .then((response) => {
-        context.commit('SET_JOBS', response.data);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  },
-  FETCH_ASK(context) {
-    fetchAskList()
-      .then((response) => {
-        context.commit('SET_ASK', response.data);
+        context.commit('SET_LIST', response.data);
+        return response;
       })
       .catch((error) => {
         throw new Error(error);
       });
   },
   FETCH_USER(context, name) {
-    fetchUserInfo(name)
+    return fetchUserInfo(name)
       .then((response) => {
         context.commit('SET_USER', response.data);
       })
@@ -44,7 +21,7 @@ export default {
       });
   },
   FETCH_ITEM(context, item) {
-    fetchItemInfo(item)
+    return fetchItemInfo(item)
       .then((response) => {
         context.commit('SET_ITEM', response.data);
       })

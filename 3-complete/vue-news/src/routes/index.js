@@ -5,6 +5,7 @@ import JobsView from '../views/JobsView.vue';
 import NewsView from '../views/NewsView.vue';
 import ItemView from '../views/ItemView.vue';
 import UserView from '../views/UserView.vue';
+// import createListView from '../views/CreateListView'; // HOC
 
 Vue.use(VueRouter);
 
@@ -19,6 +20,7 @@ export const router = new VueRouter({
       path: '/news',
       name: 'news',
       component: NewsView,
+      // component: createListView('NewsView'), // HOC
     },
     {
       path: '/ask',
