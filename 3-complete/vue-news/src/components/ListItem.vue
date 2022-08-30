@@ -3,7 +3,7 @@
     <ul class="news-list">
       <li v-for="item in listItems" :key="item.id" class="post">
         <div class="points">{{ item.points || 0 }}</div>
-        <div>
+        <div class="news-list-content">
           <p class="news-title">
             <template v-if="item.domain">
               <a :href="item.url" target="_blank">{{ item.title }}</a>
@@ -23,7 +23,9 @@
             >
               {{ item.user }}
             </router-link>
-            <a :href="item.url" target="_blank" v-else class="link-text">{{ item.domain }}</a>
+            <a :href="item.url" target="_blank" v-else class="link-text">{{
+              item.domain
+            }}</a>
           </small>
         </div>
       </li>
@@ -45,6 +47,10 @@ export default {
 .news-list {
   margin: 0;
   padding: 0;
+}
+
+.news-list-content {
+  flex: 1;
 }
 .post {
   display: flex;
