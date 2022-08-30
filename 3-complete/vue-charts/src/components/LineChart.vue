@@ -3,11 +3,9 @@
 </template>
 
 <script>
-import Chart from 'chart.js';
-
 export default {
   mounted() {
-    new Chart(this.$refs.myChart, {
+    new this.$_Chart(this.$refs.myChart, {
       type: 'line',
       data: {
         labels: ['January', 'February', 'March', 'April', 'May', 'June'],
