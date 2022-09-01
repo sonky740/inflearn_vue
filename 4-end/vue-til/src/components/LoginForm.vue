@@ -1,16 +1,31 @@
 <template>
-  <form @submit.prevent="submitForm">
-    <div>
-      <label for="username">id: </label>
-      <input type="text" id="username" v-model="username" />
+  <div class="contents">
+    <div class="form-wrapper form-wrapper-sm">
+      <form @submit.prevent="submitForm" class="form">
+        <div>
+          <label for="username">id:</label>
+          <input id="username" type="text" v-model="username" />
+          <p class="validation-text">
+            <span class="warning" v-if="!isUsernameValid && username">
+              Please enter an email address
+            </span>
+          </p>
+        </div>
+        <div>
+          <label for="password">pw:</label>
+          <input id="password" type="text" v-model="password" />
+        </div>
+        <button
+          :disabled="!isUsernameValid || !password"
+          type="submit"
+          class="btn"
+        >
+          로그인
+        </button>
+      </form>
+      <p class="log">{{ logMessage }}</p>
     </div>
-    <div>
-      <label for="password">pw: </label>
-      <input type="text" id="password" v-model="password" />
-    </div>
-    <button :disabled="!isUsernameValid || !password">로그인</button>
-    <p>{{ logMessage }}</p>
-  </form>
+  </div>
 </template>
 
 <script>
@@ -40,7 +55,12 @@ export default {
           password: this.password,
         };
         const { data } = await loginUser(userData);
-        this.logMessage = `${data.user.username} 님 환영합니다.`;
+        console.log(data.token);
+        this.$store.commit('setUsername', data.user.username);
+        this.$store.commit('setToken', data.token);
+
+        // to MainPage
+        this.$router.push('/main');
       } catch (error) {
         console.log(error.response);
         this.logMessage = error.response.data;
@@ -56,4 +76,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.btn {
+  color: white;
+}
+</style>
