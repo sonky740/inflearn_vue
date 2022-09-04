@@ -7,7 +7,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   props: {
     item: {
       type: String,
@@ -15,7 +17,7 @@ export default {
     },
   },
   methods: {
-    handlerInput(e: InputEvent) {
+    handlerInput(e: Event) {
       const eventTarget = e.target as HTMLInputElement;
       this.$emit('input', eventTarget.value);
     },
@@ -23,7 +25,7 @@ export default {
       this.$emit('add');
     },
   },
-};
+});
 </script>
 
 <style scoped></style>

@@ -19,9 +19,11 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import TodoInput from './components/TodoInput.vue';
 import TodoListItem from './components/TodoListItem.vue';
-export default {
+
+export default defineComponent({
   components: {
     TodoInput,
     TodoListItem,
@@ -44,7 +46,7 @@ export default {
       this.todoText = '';
     },
   },
-};
+});
 </script>
 
 <style scoped></style>
