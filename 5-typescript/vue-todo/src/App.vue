@@ -4,14 +4,23 @@
       <h1>Vue Todo with Typescript</h1>
     </header>
     <main>
-      <TodoInput
-        :item="todoText"
-        @input="updateTodoText"
-        @add="addTodoItem"
-      ></TodoInput>
+      <form @submit.prevent="addTodoItem">
+        <TodoInput
+          :item="todoText"
+          @input="updateTodoText"
+          @add="addTodoItem"
+        ></TodoInput>
+      </form>
       <div>
         <ul>
-          <TodoListItem></TodoListItem>
+          <TodoListItem
+            v-for="(todoItem, i) in todoItems"
+            :key="i"
+            :index="i"
+            :todoItem="todoItem"
+            @remove="removeTodoItem"
+            @toggle="doneTodoItem"
+          ></TodoListItem>
         </ul>
       </div>
     </main>
@@ -19,11 +28,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import TodoInput from './components/TodoInput.vue';
 import TodoListItem from './components/TodoListItem.vue';
 
-export default defineComponent({
+export interface Todo {
+  title: string;
+  done: boolean;
+}
+
+const STORAGE_KEY = 'vue-todo-ts-v1';
+const storage = {
+  save(todoItems: Todo[]) {
+    const parsed = JSON.stringify(todoItems);
+    localStorage.setItem(STORAGE_KEY, parsed);
+  },
+  fetch(): Todo[] {
+    const todoItems = localStorage.getItem(STORAGE_KEY) || '[]';
+    const result = JSON.parse(todoItems);
+    return result;
+  },
+};
+
+export default Vue.extend({
   components: {
     TodoInput,
     TodoListItem,
@@ -31,6 +58,7 @@ export default defineComponent({
   data() {
     return {
       todoText: '',
+      todoItems: [] as Todo[],
     };
   },
   methods: {
@@ -39,12 +67,37 @@ export default defineComponent({
     },
     addTodoItem() {
       const value = this.todoText;
-      localStorage.setItem(value, value);
+      const todo: Todo = {
+        title: value,
+        done: false,
+      };
+      this.todoItems.push(todo);
+      storage.save(this.todoItems);
       this.initTodoText();
     },
     initTodoText() {
       this.todoText = '';
     },
+    fetchTodoItems() {
+      this.todoItems = storage.fetch().sort((a, b) => {
+        if (a.title < b.title) return -1;
+        if (a.title > b.title) return 1;
+        return 0;
+      });
+    },
+    removeTodoItem(index: number) {
+      this.todoItems = this.todoItems.filter((_: Todo, i: number) => {
+        return i !== index;
+      });
+      storage.save(this.todoItems);
+    },
+    doneTodoItem(index: number, todoItem: Todo) {
+      this.todoItems[index].done = !todoItem.done;
+      storage.save(this.todoItems);
+    },
+  },
+  created() {
+    this.fetchTodoItems();
   },
 });
 </script>
