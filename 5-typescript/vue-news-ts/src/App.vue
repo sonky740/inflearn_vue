@@ -12,6 +12,7 @@
 import Vue from 'vue';
 import ToolBar from './components/ToolBar.vue';
 import LoadingSpinner from './components/LoadingSpinner.vue';
+// import { ActionTypes } from '@/store/actions';
 import bus from './utils/bus';
 
 export default Vue.extend({
@@ -32,7 +33,8 @@ export default Vue.extend({
       this.loading = false;
     },
   },
-  created() {
+  async created() {
+    // const response = await this.$store.dispatch(ActionTypes.FETCH_NEWS);
     bus.$on('on:progress', this.onProgress);
     bus.$on('off:progress', this.offProgress);
   },

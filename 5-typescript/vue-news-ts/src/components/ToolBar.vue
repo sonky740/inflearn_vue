@@ -7,8 +7,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
   data() {
     return {
       navHeight: 0,
@@ -16,7 +18,8 @@ export default {
     };
   },
   mounted() {
-    this.navHeight = this.$refs.appHeader.offsetHeight;
+    const appHeader = this.$refs.appHeader as HTMLDivElement;
+    this.navHeight = appHeader.offsetHeight;
     window.addEventListener('scroll', this.checkHeight);
   },
   methods: {
@@ -27,7 +30,7 @@ export default {
   beforeDestroy() {
     window.removeEventListener('scroll', this.checkHeight);
   },
-};
+});
 </script>
 
 <style scoped>

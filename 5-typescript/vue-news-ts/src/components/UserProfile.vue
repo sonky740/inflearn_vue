@@ -19,9 +19,10 @@
 
 <script>
 /* eslint-disable */
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
 
-export default {
+export default Vue.extend({
   props: {
     userInfo: {
       type: Object
@@ -32,7 +33,7 @@ export default {
       'userContent', 'userQuestion', 'userName', 'userTimeAgo', 'contentPoints',
     ]),
   },
-};
+});
 </script>
 
 <style scoped>

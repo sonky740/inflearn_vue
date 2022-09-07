@@ -46,6 +46,11 @@ export default Vue.extend({
       required: true,
     },
   },
+  // computed: {
+  //   listItems(): any {
+  //     return this.$store.getters.fetchedList;
+  //   }
+  // },
   methods: {
     timeAgo(news: NewsItem): string {
       return news.time_ago.concat(', 2022');
