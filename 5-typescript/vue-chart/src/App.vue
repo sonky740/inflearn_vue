@@ -1,18 +1,22 @@
 <template>
   <div>
-    <canvas id="myChart"></canvas>
+    <canvas ref="myChart"></canvas>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { MyChartRefs } from '@/types';
 
-export default Vue.extend({
+export default (Vue as MyChartRefs<{ myChart: HTMLCanvasElement }>).extend({
+  methods: {
+    sayHi() {
+      // const canvasElement = this.$refs.myChart;
+    },
+  },
   mounted() {
-    const canvasElement = document.getElementById(
-      'myChart'
-    ) as HTMLCanvasElement;
-    const ctx = canvasElement.getContext('2d');
+    const canvasElement = this.$refs.myChart;
+    const ctx = canvasElement?.getContext('2d');
     if (!ctx) return false;
     new this.$_Chart(ctx, {
       type: 'bar',

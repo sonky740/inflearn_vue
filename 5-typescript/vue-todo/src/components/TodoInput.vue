@@ -8,6 +8,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { VueEvent } from '@/types';
 
 export default Vue.extend({
   props: {
@@ -17,7 +18,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    handlerInput(e: Event) {
+    handlerInput(e: VueEvent.Input<HTMLInputElement>) {
       const eventTarget = e.target as HTMLInputElement;
       this.$emit('input', eventTarget.value);
     },
