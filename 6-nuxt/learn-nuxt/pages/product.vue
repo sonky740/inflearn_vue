@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <ul>
       <li>상품 1</li>
       <li>상품 2</li>
@@ -10,7 +9,7 @@
 </template>
 
 <script>
-export default {}
+export default {};
 </script>
 
 <style></style>
