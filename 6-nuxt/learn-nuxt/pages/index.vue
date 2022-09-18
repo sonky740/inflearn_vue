@@ -1,8 +1,11 @@
 <template>
   <div class="app">
     <main>
-      <SearchInput></SearchInput>
-      <ul>
+      <SearchInput
+        v-model="searchKeyword"
+        @search="searchProducts"
+      ></SearchInput>
+      <ul class="list-wrap">
         <li v-for="product in products" :key="product.id" class="item flex">
           <NuxtLink :to="`detail/${product.id}`">
             <img
@@ -22,6 +25,7 @@
 <script>
 import axios from 'axios';
 import SearchInput from '@/components/SearchInput.vue';
+import { fetchProductsByKeyword } from '@/api';
 
 export default {
   components: { SearchInput },
@@ -35,6 +39,22 @@ export default {
     });
     return { products };
   },
+  data() {
+    return {
+      searchKeyword: '',
+    };
+  },
+  methods: {
+    async searchProducts() {
+      const response = await fetchProductsByKeyword(this.searchKeyword);
+      this.products = response.data.map(item => {
+        return {
+          ...item,
+          imageUrl: `${item.imageUrl}?random=${Math.random()}`,
+        };
+      });
+    },
+  },
 };
 </script>
 
@@ -42,6 +62,9 @@ export default {
 .flex {
   display: flex;
   justify-content: center;
+}
+.list-wrap {
+  text-align: center;
 }
 .item {
   display: inline-block;

@@ -1,12 +1,44 @@
 <template>
-  <div>
-    <input type="text" />
-    <button>search</button>
-  </div>
+  <form class="input-wrapper flex" @submit.prevent="searchHandler">
+    <input
+      type="text"
+      class="search-input"
+      :value="value"
+      @input="$emit('input', $event.target.value)"
+      @keyup.enter.exact="$emit('search')"
+    />
+    <button class="btn" type="submit">search</button>
+  </form>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    value: {
+      type: String,
+      default: () => '',
+    },
+  },
+  methods: {
+    searchHandler() {
+      this.$emit('search');
+    },
+  },
+};
 </script>
 
-<style></style>
+<style scoped>
+.input-wrapper {
+  height: 40px;
+  margin: 1rem 0;
+}
+.search-input {
+  width: 200px;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.btn {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+</style>
