@@ -193,6 +193,24 @@
       "name": "Awesome Concrete Shirt",
       "price": "165.00",
       "imageUrl": "http://placeimg.com/640/480/fashion"
+    },
+    {
+      "id": 13,
+      "name": "Refined Soft Towels",
+      "price": "723.00",
+      "imageUrl": "http://placeimg.com/640/480/fashion"
+    },
+    {
+      "id": 8,
+      "name": "Sleek Steel Towels",
+      "price": "607.00",
+      "imageUrl": "http://placeimg.com/640/480/fashion"
+    },
+    {
+      "id": 18,
+      "name": "Rustic Plastic Fish",
+      "price": "133.00",
+      "imageUrl": "http://placeimg.com/640/480/fashion"
     }
   ]
 }
