@@ -36,6 +36,16 @@ export default {
   build: {},
 
   server: {
-    port: 4444,
+    port: process.env.NODE_ENV === 'production' ? 80 : 4444,
   },
+
+  // env config
+  env: {
+    baseURL:
+      process.env.NODE_ENV === 'production'
+        ? 'https://my-json-server.typicode.com/sonky740/dummy_api'
+        : 'http://localhost:3000',
+  },
+
+  // target: 'static',
 };

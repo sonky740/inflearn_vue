@@ -1,11 +1,15 @@
 import axios from 'axios';
 
 const products = axios.create({
-  baseURL: 'http://localhost:3000/products',
+  baseURL: `${process.env.baseURL}/products`,
 });
 
+const fetchProducts = () => {
+  return products.get('/');
+};
+
 const carts = axios.create({
-  baseURL: 'http://localhost:3000/carts',
+  baseURL: `${process.env.baseURL}/carts`,
 });
 
 const fetchProductById = id => {
@@ -30,6 +34,7 @@ const createCartItem = cartItem => {
 
 export {
   fetchProductById,
+  fetchProducts,
   fetchProductsByKeyword,
   fetchCartItems,
   createCartItem,
