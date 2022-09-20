@@ -25,6 +25,33 @@ export default {
     const product = response.data;
     return { product };
   },
+  head() {
+    return {
+      title: `Shopping Item Detail - ${this.product.name}`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `이 상품은 - ${this.product.name}입니다.`,
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: `Shopping Item Detail - ${this.product.name}`,
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: `이 상품은 - ${this.product.name}입니다.`,
+        },
+        {
+          hid: 'og:image',
+          name: 'og:image',
+          content: 'http://placeimg.com/640/480/fashion',
+        },
+      ],
+    };
+  },
   methods: {
     async addToCart() {
       const response = await createCartItem(this.product);
