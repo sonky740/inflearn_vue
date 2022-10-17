@@ -45,7 +45,7 @@
     {
       "id": 8,
       "title": "제목8",
-      "content": "내용8",
+      "content": "내용8ee",
       "createdAt": "2022-01-08"
     },
     {
@@ -55,10 +55,16 @@
       "createdAt": "2022-01-09"
     },
     {
+      "title": null,
+      "content": null,
+      "createdAt": "2022-10-17",
+      "id": 11
+    },
+    {
       "title": "ㅅㅅ",
       "content": "ㅅㅅ",
-      "createdAt": "2022-10-16",
-      "id": 10
+      "createdAt": "2022-10-17",
+      "id": 12
     }
   ]
 }

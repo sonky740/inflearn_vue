@@ -33,7 +33,7 @@ import { getPostById, deletePost } from '@/api/posts';
 
 const props = defineProps({
   id: {
-    type: Number,
+    type: [String, Number],
     required: true,
   },
 });

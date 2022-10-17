@@ -2,36 +2,23 @@
   <div>
     <h2>게시글 수정</h2>
     <hr class="my-4" />
-    <form @submit.prevent="edit">
-      <div class="mb-3">
-        <label for="title" class="form-label">제목</label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          v-model="form.title"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="content" class="form-label">내용</label>
-        <textarea
-          class="form-control"
-          id="content"
-          rows="3"
-          v-model="form.content"
-        ></textarea>
-      </div>
-      <div class="pt-4">
+    <PostForm
+      v-model:title="form.title"
+      v-model:content="form.content"
+      @submit.prevent="edit"
+    >
+      <template #actions>
         <button
           type="button"
-          class="btn btn-outline-danger me-2"
+          class="btn btn-outline-danger"
           @click="goDetailPage"
         >
           취소
         </button>
         <button type="submit" class="btn btn-primary">수정</button>
-      </div>
-    </form>
+      </template>
+    </PostForm>
+    <AppAlert :items="alerts" />
   </div>
 </template>
 
@@ -39,6 +26,8 @@
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { getPostById, updatePost } from '@/api/posts';
+import PostForm from '@/components/posts/PostForm.vue';
+import AppAlert from '@/components/AppAlert.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -55,6 +44,7 @@ const fetchPost = async () => {
     setForm(data);
   } catch (error) {
     console.error(error);
+    vAlert(error.message);
   }
 };
 
@@ -72,9 +62,10 @@ const edit = async () => {
       ...form.value,
     };
     await updatePost(id, data);
-    router.push({ name: 'PostDetail', params: { id } });
+    vAlert('수정이 완료되었습니다.', 'success');
   } catch (error) {
     console.error(error);
+    vAlert(error.message);
   }
 };
 
@@ -85,6 +76,18 @@ const goDetailPage = () => {
       id,
     },
   });
+};
+
+// alert
+const alerts = ref([]);
+const vAlert = (message, type = 'error') => {
+  alerts.value.push({
+    message,
+    type,
+  });
+  setTimeout(() => {
+    alerts.value.shift();
+  }, 1500);
 };
 </script>
 
