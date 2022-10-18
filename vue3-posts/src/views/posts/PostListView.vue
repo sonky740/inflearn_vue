@@ -7,22 +7,27 @@
       v-model:limit="params._limit"
     />
     <hr class="my-4" />
-    <AppGrid :items="posts">
-      <template v-slot="{ item }">
-        <PostItem
-          :title="item.title"
-          :content="item.content"
-          :created-at="item.createdAt"
-          @click="goPage(item.id)"
-          @modal="openModal(item)"
-        ></PostItem>
-      </template>
-    </AppGrid>
-    <AppPagination
-      :current-page="params._page"
-      :page-count="pageCount"
-      @page="page => (params._page = page)"
-    />
+    <AppLoading v-if="loading" />
+    <AppError v-else-if="error" :message="error.message" />
+    <template v-else>
+      <AppGrid :items="posts">
+        <template v-slot="{ item }">
+          <PostItem
+            :title="item.title"
+            :content="item.content"
+            :created-at="item.createdAt"
+            @click="goPage(item.id)"
+            @modal="openModal(item)"
+          ></PostItem>
+        </template>
+      </AppGrid>
+      <AppPagination
+        :current-page="params._page"
+        :page-count="pageCount"
+        @page="page => (params._page = page)"
+      />
+    </template>
+
     <PostModal
       v-model="show"
       :title="modalTitle"
@@ -43,15 +48,15 @@ import { ref, computed, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import { getPosts } from '@/api/posts';
 import PostItem from '@/components/posts/PostItem.vue';
-import AppPagination from '@/components/AppPagination.vue';
 import PostDetailView from '@/views/posts/PostDetailView.vue';
 import PostFilter from '@/components/posts/PostFilter.vue';
-import AppCard from '@/components/AppCard.vue';
-import AppGrid from '@/components/AppGrid.vue';
 import PostModal from '@/components/posts/PostModal.vue';
 
 const router = useRouter();
 const posts = ref([]);
+const error = ref('');
+const loading = ref(false);
+
 const params = ref({
   _sort: 'createdAt',
   _order: 'desc',
@@ -67,11 +72,14 @@ const pageCount = computed(() =>
 
 const fetchPosts = async () => {
   try {
+    loading.value = true;
     const { data, headers } = await getPosts(params.value);
     posts.value = data;
     totalCount.value = headers['x-total-count'];
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    error.value = err;
+  } finally {
+    loading.value = false;
   }
 };
 fetchPosts();

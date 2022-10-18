@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <AppLoading v-if="loading" />
+  <AppError v-else-if="error" :message="error.message" />
+  <div v-else>
+    <AppError v-if="removeError" :message="removeError.message" />
     <h2>{{ post.title }}</h2>
     <p>{{ post.content }}</p>
     <p class="text-muted">{{ post.createdAt }}</p>
@@ -20,7 +23,21 @@
         </button>
       </div>
       <div class="col-auto">
-        <button class="btn btn-outline-danger" @click="remove">삭제</button>
+        <button
+          class="btn btn-outline-danger"
+          @click="remove"
+          :disabled="removeLoading"
+        >
+          <template v-if="removeLoading">
+            <span
+              class="spinner-grow spinner-grow-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <span class="visually-hidden">Loading...</span>
+          </template>
+          <template v-else>삭제</template>
+        </button>
       </div>
     </div>
   </div>
@@ -50,13 +67,18 @@ const router = useRouter();
  * 단점) 객체 할당 불가능
  */
 const post = ref({});
+const error = ref('');
+const loading = ref(false);
 
 const fetchPost = async () => {
   try {
+    loading.value = true;
     const { data } = await getPostById(props.id);
     setPost(data);
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    error.value = err;
+  } finally {
+    loading.value = false;
   }
 };
 const setPost = ({ title, content, createdAt }) => {
@@ -68,14 +90,19 @@ const setPost = ({ title, content, createdAt }) => {
 };
 fetchPost();
 
+const removeError = ref('');
+const removeLoading = ref(false);
 const remove = async () => {
   try {
+    removeLoading.value = true;
     if (confirm('삭제 하시겠습니까?')) {
       await deletePost(props.id);
       goListPage();
     }
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    removeError.value = err;
+  } finally {
+    removeLoading.value = false;
   }
 };
 

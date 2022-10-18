@@ -1,70 +1,76 @@
 {
   "posts": [
     {
-      "id": 1,
       "title": "제목1",
-      "content": "내용1",
-      "createdAt": "2022-01-01"
+      "content": "제목1",
+      "createdAt": "2022-10-18 22:37:43",
+      "id": 12
     },
     {
-      "id": 2,
       "title": "제목2",
-      "content": "내용2",
-      "createdAt": "2022-01-02"
+      "content": "제목2",
+      "createdAt": "2022-10-18 22:37:44",
+      "id": 12
     },
     {
-      "id": 3,
       "title": "제목3",
-      "content": "내용3",
-      "createdAt": "2022-01-03"
+      "content": "제목3",
+      "createdAt": "2022-10-18 22:37:45",
+      "id": 12
     },
     {
-      "id": 4,
       "title": "제목4",
-      "content": "내용4",
-      "createdAt": "2022-01-04"
+      "content": "제목4",
+      "createdAt": "2022-10-18 22:37:46",
+      "id": 12
     },
     {
-      "id": 5,
       "title": "제목5",
-      "content": "내용5",
-      "createdAt": "2022-01-05"
+      "content": "제목5",
+      "createdAt": "2022-10-18 22:37:47",
+      "id": 12
     },
     {
-      "id": 6,
       "title": "제목6",
-      "content": "내용6",
-      "createdAt": "2022-01-06"
+      "content": "제목6",
+      "createdAt": "2022-10-18 22:37:48",
+      "id": 12
     },
     {
-      "id": 7,
       "title": "제목7",
-      "content": "내용7",
-      "createdAt": "2022-01-07"
+      "content": "제목7",
+      "createdAt": "2022-10-18 22:38:38",
+      "id": 13
     },
     {
-      "id": 8,
       "title": "제목8",
-      "content": "내용8ee",
-      "createdAt": "2022-01-08"
+      "content": "제목8ㅅㅅ",
+      "createdAt": "2022-10-18 22:38:44",
+      "id": 14
     },
     {
-      "id": 9,
       "title": "제목9",
-      "content": "내용9",
-      "createdAt": "2022-01-09"
-    },
-    {
-      "title": null,
-      "content": null,
-      "createdAt": "2022-10-17",
-      "id": 11
+      "content": "제목9",
+      "createdAt": "2022-10-18 22:38:48",
+      "id": 15
     },
     {
       "title": "ㅅㅅ",
       "content": "ㅅㅅ",
-      "createdAt": "2022-10-17",
-      "id": 12
+      "createdAt": "2022-10-18 22:38:50",
+      "id": 16
+    },
+    {
+      "title": "ㅅㅅ2",
+      "content": "ㅅㅅ2",
+      "createdAt": "2022-10-18 23:19:58",
+      "id": 17
+    },
+    {
+      "title": "ㅅㅅ3",
+      "content": "ㅅㅅ3",
+      "createdAt": "2022-10-18 23:27:14",
+      "id": 18
     }
   ]
 }

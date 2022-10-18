@@ -13,7 +13,7 @@
       <div class="col-3">
         <select
           :value="limit"
-          @input="$emit('update:limit', $event.target.value)"
+          @input="$emit('update:limit', +$event.target.value)"
           class="form-select"
         >
           <option value="3">3개씩 보기</option>
