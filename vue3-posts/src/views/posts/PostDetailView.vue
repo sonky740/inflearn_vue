@@ -4,6 +4,7 @@
   <div v-else>
     <AppError v-if="removeError" :message="removeError.message" />
     <h2>{{ post.title }}</h2>
+    <p>id: {{ props.id }}, isOdd: {{ isOdd }}</p>
     <p>{{ post.content }}</p>
     <p class="text-muted">{{ post.createdAt }}</p>
     <hr class="my-4" />
@@ -44,66 +45,45 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, toRef } from 'vue';
 import { useRouter } from 'vue-router';
-import { getPostById, deletePost } from '@/api/posts';
+import { useAxios } from '@/hooks/useAxios';
+import { useAlert } from '@/hooks/useAlert';
+import { useNumber } from '@/hooks/useNumber';
 
 const props = defineProps({
-  id: {
-    type: [String, Number],
-    required: true,
-  },
+  id: [String, Number],
 });
 
 const router = useRouter();
-/**
- * ref
- * 장점) 객체 할당 가능
- * 장점) 일관성 유지
- * 단점) .value로 접근해야 함
- *
- * reactive
- * 장점) .value로 접근 안해도 됨
- * 단점) 객체 할당 불가능
- */
-const post = ref({});
-const error = ref('');
-const loading = ref(false);
+const idRef = toRef(props, 'id');
+// const { id: idRef } = toRefs(props);
+const { isOdd } = useNumber(idRef);
+const url = computed(() => `/posts/${props.id}`);
+const { error, loading, data: post } = useAxios(url);
 
-const fetchPost = async () => {
-  try {
-    loading.value = true;
-    const { data } = await getPostById(props.id);
-    setPost(data);
-  } catch (err) {
-    error.value = err;
-  } finally {
-    loading.value = false;
-  }
-};
-const setPost = ({ title, content, createdAt }) => {
-  post.value = {
-    title,
-    content,
-    createdAt: new Date(createdAt).toLocaleString(),
-  };
-};
-fetchPost();
+const {
+  error: removeError,
+  loading: removeLoading,
+  execute,
+} = useAxios(
+  `/posts/${props.id}`,
+  { method: 'DELETE' },
+  {
+    immediate: false,
+    onSuccess: () => {
+      router.push({ name: 'PostList' });
+      vSuccess('삭제가 완료되었습니다.');
+    },
+    onError: err => {
+      vAlert(err.message);
+    },
+  },
+);
 
-const removeError = ref('');
-const removeLoading = ref(false);
 const remove = async () => {
-  try {
-    removeLoading.value = true;
-    if (confirm('삭제 하시겠습니까?')) {
-      await deletePost(props.id);
-      goListPage();
-    }
-  } catch (err) {
-    removeError.value = err;
-  } finally {
-    removeLoading.value = false;
-  }
+  if (confirm('삭제 하시겠습니까?') === false) return;
+  execute();
 };
 
 const goListPage = () => {
@@ -120,6 +100,9 @@ const goEditPage = () => {
     },
   });
 };
+
+// alert
+const { vAlert, vSuccess } = useAlert();
 </script>
 
 <style lang="scss" scoped></style>

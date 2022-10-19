@@ -31,17 +31,15 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { createPost } from '@/api/posts';
 import PostForm from '@/components/posts/PostForm.vue';
 import { useAlert } from '@/hooks/useAlert.js';
+import { useAxios } from '@/hooks/useAxios';
 
 const router = useRouter();
 const form = ref({
   title: null,
   content: null,
 });
-const error = ref('');
-const loading = ref(false);
 
 // 현재 년, 월, 시, 분, 초
 const getCurrentDate = () => {
@@ -54,23 +52,22 @@ const getCurrentDate = () => {
   const seconds = date.getSeconds();
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
-
+const { error, loading, execute } = useAxios(
+  '/posts',
+  { method: 'POST' },
+  {
+    immediate: false,
+    onSuccess: () => {
+      router.push({ name: 'PostList' });
+      vSuccess('등록이 완료되었습니다!');
+    },
+    onError: err => {
+      vAlert(err.message);
+    },
+  },
+);
 const save = async () => {
-  try {
-    loading.value = true;
-    const data = {
-      ...form.value,
-      createdAt: getCurrentDate(),
-    };
-    await createPost(data);
-    router.push({ name: 'PostList' });
-    vSuccess('등록이 완료되었습니다.');
-  } catch (err) {
-    vAlert(err.message);
-    error.value = err;
-  } finally {
-    loading.value = false;
-  }
+  execute({ ...form.value, createAt: getCurrentDate() });
 };
 
 const goListPage = () => {
