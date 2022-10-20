@@ -10,10 +10,20 @@
     <hr class="my-4" />
     <div class="row">
       <div class="col-auto">
-        <button class="btn btn-outline-dark">이전글</button>
+        <button
+          class="btn btn-outline-dark"
+          @click="$router.push(`/posts/${+props.id - 1}`)"
+        >
+          이전글
+        </button>
       </div>
       <div class="col-auto">
-        <button class="btn btn-outline-dark">다음글</button>
+        <button
+          class="btn btn-outline-dark"
+          @click="$router.push(`/posts/${+props.id + 1}`)"
+        >
+          다음글
+        </button>
       </div>
       <div class="col-auto">
         <button class="btn btn-outline-dark" @click="goListPage">목록</button>
@@ -46,7 +56,7 @@
 
 <script setup>
 import { computed, toRef } from 'vue';
-import { useRouter } from 'vue-router';
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRouter } from 'vue-router';
 import { useAxios } from '@/hooks/useAxios';
 import { useAlert } from '@/hooks/useAlert';
 import { useNumber } from '@/hooks/useNumber';
@@ -103,6 +113,23 @@ const goEditPage = () => {
 
 // alert
 const { vAlert, vSuccess } = useAlert();
+
+// router
+onBeforeRouteUpdate(() => {
+  console.log('onBeforeRouteUpdate');
+});
+
+onBeforeRouteLeave(() => {
+  console.log('onBeforeRouteLeave');
+});
+</script>
+
+<script>
+export default {
+  beforeRouteEnter() {
+    console.log('beforeRouteEnter');
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>

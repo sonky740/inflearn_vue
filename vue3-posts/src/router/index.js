@@ -5,6 +5,7 @@ import {
 } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
 import AboutView from '@/views/AboutView.vue';
+import MyPageView from '@/views/MyPageView.vue';
 import PostCreateView from '@/views/posts/PostCreateView.vue';
 import PostDetailView from '@/views/posts/PostDetailView.vue';
 import PostListView from '@/views/posts/PostListView.vue';
@@ -75,16 +76,41 @@ const routes = [
     ],
   },
   {
+    path: '/my',
+    name: 'MyPage',
+    component: MyPageView,
+    beforeEnter: [removeQueryString],
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFoundView,
   },
 ];
 
+// 쿼리 삭제
+function removeQueryString(to) {
+  if (Object.keys(to.query).length > 0) {
+    return { path: to.path, quert: {} };
+  }
+}
+
 const router = createRouter({
   history: createWebHistory('/'),
   // history: createWebHashHistory(), // SEO에 나쁨
   routes,
 });
+
+// router.beforeEach((to, from) => {
+// 기존 3번째에 있던 next는 개발자들의 실수가 많아서 권장하지 않게됨.
+//   console.log('to: ', to);
+//   console.log('from: ', from);
+
+//   if (to.name === 'MyPage') {
+//     // return false;
+//     // return router.push({ name: 'Home' });
+//     return '/posts';
+//   }
+// });
 
 export default router;
