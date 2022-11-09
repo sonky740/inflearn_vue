@@ -12,10 +12,9 @@
 import LearningResource from './LearningResource.vue';
 
 export default {
-  props: {
+  inject: {
     resources: {
-      type: Array,
-      required: true,
+      default: [],
     },
   },
   components: {
