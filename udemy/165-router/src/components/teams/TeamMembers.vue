@@ -40,12 +40,20 @@ export default {
         selectedMembers.push(selectedUser);
       }
 
+      console.log(this.$route.query.sort);
+
       this.members = selectedMembers;
       this.teamName = selectedTeam.name;
     },
   },
   created() {
     this.loadTeamMembers(this.teamId);
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log('TeamMembers beforeRouteUpdate');
+    console.log(to, from);
+    this.loadTeamMembers(to.params.teamId);
+    next();
   },
   watch: {
     teamId(newId) {
