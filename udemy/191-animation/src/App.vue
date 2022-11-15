@@ -1,4 +1,12 @@
 <template>
+  <router-view v-slot="slotProps">
+    <Transition name="route" mode="out-in">
+      <component :is="slotProps.Component" />
+    </Transition>
+  </router-view>
+  <!-- <div class="container">
+    <UsersList></UsersList>
+  </div>
   <div class="container">
     <div class="block" :class="{ animate: animateBlock }"></div>
     <button @click="animatedBlock">Animate</button>
@@ -31,11 +39,15 @@
   </base-modal>
   <div class="container">
     <button @click="showDialog">Show Dialog</button>
-  </div>
+  </div> -->
 </template>
 
 <script>
+// import UsersList from './components/UsersList.vue';
 export default {
+  // components: {
+  //   UsersList,
+  // },
   data() {
     return {
       dialogIsVisible: false,
@@ -213,4 +225,18 @@ button:active {
     transform: translate3d(0, 0, 0) scale(1);
   }
 }
+
+/* .route-enter-from {
+} */
+
+.route-enter-active {
+  animation: slide-scale 0.5s ease-out;
+}
+
+.route-leave-active {
+  animation: slide-scale 0.5s ease-out reverse;
+}
+
+/* .route-enter-to {
+} */
 </style>
