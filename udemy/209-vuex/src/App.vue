@@ -5,7 +5,7 @@
     <button @click="addOne">Add 10</button>
     <ChangeCounter></ChangeCounter>
   </base-container>
-  <base-container v-else>
+  <base-container title="Auth">
     <UserAuth></UserAuth>
   </base-container>
 </template>
@@ -36,7 +36,7 @@ export default {
     addOne() {
       // this.$store.commit('increase', { value: 10 });
       this.$store.dispatch({
-        type: 'increase',
+        type: 'numbers/increase',
         value: 10,
       });
     },
