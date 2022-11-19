@@ -1,36 +1,23 @@
+import { requestCoaches, getCoaches } from '../../api';
+
 export default {
   namespaced: true,
   state() {
     return {
-      coaches: [
-        {
-          id: 'c1',
-          firstName: 'Maximilian',
-          lastName: 'Schwarzmüller',
-          areas: ['frontend', 'backend', 'career'],
-          description:
-            "I'm Maximilian and I've worked as a freelance web developer for years. Let me help you become a developer as well!",
-          hourlyRate: 30,
-        },
-        {
-          id: 'c2',
-          firstName: 'Julie',
-          lastName: 'Jones',
-          areas: ['frontend', 'career'],
-          description:
-            'I am Julie and as a senior developer in a big tech company, I can help you get your first job or progress in your current role.',
-          hourlyRate: 30,
-        },
-      ],
+      coaches: [],
     };
   },
   mutations: {
     registerCoach(state, payload) {
       state.coaches.push(payload);
     },
+    setCoaches(state, payload) {
+      state.coaches = payload;
+    },
   },
   actions: {
-    registerCoach(context, data) {
+    async registerCoach(context, data) {
+      const userId = context.rootGetters.userId;
       const coachData = {
         id: context.rootGetters.userId,
         firstName: data.first,
@@ -40,7 +27,42 @@ export default {
         areas: data.areas,
       };
 
-      context.commit('registerCoach', coachData);
+      const response = await requestCoaches(userId, coachData);
+
+      // const responseData = await response.data;
+      if (!response.ok) {
+        // error...
+      }
+
+      context.commit('registerCoach', {
+        ...coachData,
+        id: userId,
+      });
+    },
+    async loadCoaches(context) {
+      const response = await getCoaches();
+
+      const responseData = await response.data;
+
+      if (!response.ok) {
+        // ...
+      }
+
+      const coaches = [];
+
+      for (const key in responseData) {
+        const coach = {
+          id: key,
+          firstName: responseData[key].firstName,
+          lastName: responseData[key].lastName,
+          description: responseData[key].description,
+          hourlyRate: responseData[key].hourlyRate,
+          areas: responseData[key].areas,
+        };
+        coaches.push(coach);
+      }
+
+      context.commit('setCoaches', coaches);
     },
   },
   getters: {
