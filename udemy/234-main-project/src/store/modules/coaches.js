@@ -4,6 +4,7 @@ export default {
   namespaced: true,
   state() {
     return {
+      lastFetch: null,
       coaches: [],
     };
   },
@@ -13,6 +14,9 @@ export default {
     },
     setCoaches(state, payload) {
       state.coaches = payload;
+    },
+    setFetchTimestamp(state) {
+      state.lastFetch = new Date().getTime();
     },
   },
   actions: {
@@ -30,7 +34,7 @@ export default {
       const response = await requestCoaches(userId, coachData);
 
       // const responseData = await response.data;
-      if (!response.ok) {
+      if (response.status !== 200) {
         // error...
       }
 
@@ -39,13 +43,16 @@ export default {
         id: userId,
       });
     },
-    async loadCoaches(context) {
+    async loadCoaches(context, payload) {
+      if (!payload.forceRefresh && !context.getters.shouldUpdate) return;
+
       const response = await getCoaches();
 
       const responseData = await response.data;
 
-      if (!response.ok) {
-        // ...
+      if (response.status !== 200) {
+        const error = new Error(responseData.message || 'Failed to fetch!');
+        throw error;
       }
 
       const coaches = [];
@@ -63,6 +70,7 @@ export default {
       }
 
       context.commit('setCoaches', coaches);
+      context.commit('setFetchTimestamp');
     },
   },
   getters: {
@@ -76,6 +84,14 @@ export default {
       const coaches = getters.coaches;
       const userId = rootGetters.userId;
       return coaches.some((coach) => coach.id === userId);
+    },
+    shouldUpdate(state) {
+      const lastFetch = state.lastFetch;
+      if (!lastFetch) {
+        return true;
+      }
+      const currentTimestamp = new Date().getTime();
+      return (currentTimestamp - lastFetch) / 1000 > 60;
     },
   },
 };

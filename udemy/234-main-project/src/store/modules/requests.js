@@ -1,3 +1,5 @@
+import { requestContactCoach, getRequests } from '../../api';
+
 export default {
   namespaced: true,
   state() {
@@ -9,17 +11,57 @@ export default {
     addRequest(state, payload) {
       state.requests.push(payload);
     },
+    setRequests(state, payload) {
+      state.requests = payload;
+    },
   },
   actions: {
-    contactCoach(context, payload) {
+    async contactCoach(context, payload) {
       const newRequest = {
-        id: new Date().toISOString(),
-        coachId: payload.coachId,
         userEmail: payload.email,
         message: payload.message,
       };
 
+      const response = await requestContactCoach(payload.coachId, newRequest);
+      const responseData = await response.data;
+
+      if (response.status !== 200) {
+        const error = new Error(
+          responseData.message || 'Failed to send request.'
+        );
+        throw error;
+      }
+
+      newRequest.id = responseData.name;
+      newRequest.coachId = payload.coachId;
+
       context.commit('addRequest', newRequest);
+    },
+    async fetchRequests(context) {
+      const coachId = context.rootGetters.userId;
+      const response = await getRequests(coachId);
+      const responseData = await response.data;
+
+      if (response.status !== 200) {
+        const error = new Error(
+          responseData.message || 'Failed to send request.'
+        );
+        throw error;
+      }
+
+      const requests = [];
+      for (const key in responseData) {
+        const request = {
+          id: key,
+          coachId: coachId,
+          userEmail: responseData[key].userEmail,
+          message: responseData[key].message,
+        };
+
+        requests.push(request);
+      }
+
+      context.commit('setRequests', requests);
     },
   },
   getters: {
