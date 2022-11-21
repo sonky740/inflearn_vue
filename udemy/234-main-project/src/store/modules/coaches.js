@@ -1,4 +1,4 @@
-import { requestCoaches, getCoaches } from '../../api';
+import { defaultApi } from '../../api';
 
 export default {
   namespaced: true,
@@ -31,7 +31,7 @@ export default {
         areas: data.areas,
       };
 
-      const response = await requestCoaches(userId, coachData);
+      const response = await defaultApi.put(`/coaches/${userId}.json`, data);
 
       // const responseData = await response.data;
       if (response.status !== 200) {
@@ -46,7 +46,7 @@ export default {
     async loadCoaches(context, payload) {
       if (!payload.forceRefresh && !context.getters.shouldUpdate) return;
 
-      const response = await getCoaches();
+      const response = await defaultApi.get('/coaches.json');
 
       const responseData = await response.data;
 

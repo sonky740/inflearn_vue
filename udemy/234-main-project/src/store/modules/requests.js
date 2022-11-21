@@ -1,4 +1,4 @@
-import { requestContactCoach, getRequests } from '../../api';
+import { defaultApi } from '../../api';
 
 export default {
   namespaced: true,
@@ -22,7 +22,10 @@ export default {
         message: payload.message,
       };
 
-      const response = await requestContactCoach(payload.coachId, newRequest);
+      const response = await defaultApi.post(
+        `/requests/${payload.coachId}.json`,
+        newRequest
+      );
       const responseData = await response.data;
 
       if (response.status !== 200) {
@@ -39,7 +42,7 @@ export default {
     },
     async fetchRequests(context) {
       const coachId = context.rootGetters.userId;
-      const response = await getRequests(coachId);
+      const response = await defaultApi.get(`/requests/${coachId}.json`);
       const responseData = await response.data;
 
       if (response.status !== 200) {
