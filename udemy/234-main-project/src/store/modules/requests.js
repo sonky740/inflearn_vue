@@ -42,7 +42,10 @@ export default {
     },
     async fetchRequests(context) {
       const coachId = context.rootGetters.userId;
-      const response = await defaultApi.get(`/requests/${coachId}.json`);
+      const token = context.rootGetters.token;
+      const response = await defaultApi.get(
+        `/requests/${coachId}.json?auth=${token}`
+      );
       const responseData = await response.data;
 
       if (response.status !== 200) {

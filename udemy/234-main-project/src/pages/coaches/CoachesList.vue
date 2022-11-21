@@ -6,10 +6,17 @@
     <section>
       <BaseCard>
         <div class="controls">
-          <BaseButton mode="outline" @click="loadCoaches(true)"
-            >Refresh</BaseButton
+          <BaseButton mode="outline" @click="loadCoaches(true)">
+            Refresh
+          </BaseButton>
+          <BaseButton link to="/auth?redirect=register" v-if="!isLoggedIn">
+            Login to Register as Coach
+          </BaseButton>
+          <BaseButton
+            v-if="isLoggedIn && !isCoach && !isLoading"
+            link
+            to="/register"
           >
-          <BaseButton v-if="!isCoach && !isLoading" link to="/register">
             Register as Coach
           </BaseButton>
         </div>
@@ -62,6 +69,12 @@ export default {
     };
   },
   computed: {
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
+    isCoach() {
+      return this.$store.getters['coaches/isCoach'];
+    },
     hasCoaches() {
       return !this.isLoading && this.$store.getters['coaches/hasCoaches'];
     },
@@ -80,9 +93,6 @@ export default {
 
         return false;
       });
-    },
-    isCoach() {
-      return this.$store.getters['coaches/isCoach'];
     },
   },
   methods: {

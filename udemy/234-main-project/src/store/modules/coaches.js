@@ -31,7 +31,9 @@ export default {
         areas: data.areas,
       };
 
-      const response = await defaultApi.put(`/coaches/${userId}.json`, data);
+      const token = context.rootGetters.token;
+
+      const response = await defaultApi.put(`/coaches/${userId}.json?auth=${token}`, data);
 
       // const responseData = await response.data;
       if (response.status !== 200) {
