@@ -1,19 +1,28 @@
 <template>
   <li>
-    <h3>{{ userName }}</h3>
+    <h3>{{ props.userName }}</h3>
     <button @click="viewProjects">View Projects</button>
   </li>
 </template>
 
-<script>
-export default {
-  props: ['id', 'userName'],
-  emits: ['list-projects'],
-  methods: {
-    viewProjects() {
-      this.$emit('list-projects', this.id);
-    },
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
   },
+  userName: {
+    type: String,
+    required: true,
+  },
+});
+
+const emit = defineEmits(['list-projects']);
+
+const viewProjects = () => {
+  emit('list-projects', props.id);
 };
 </script>
 

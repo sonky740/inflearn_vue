@@ -1,18 +1,28 @@
 <template>
   <form>
-    <input type="search" @input="search" :value="searchTerm" placeholder="Filter items" />
+    <input
+      type="search"
+      @input="search"
+      :value="props.searchTerm"
+      placeholder="Filter items"
+    />
   </form>
 </template>
 
-<script>
-export default {
-  props: ['searchTerm'],
-  emits: ['search'],
-  methods: {
-    search(event) {
-      this.$emit('search', event.target.value);
-    },
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+
+const props = defineProps({
+  searchTerm: {
+    type: String,
+    required: true,
   },
+});
+
+const emit = defineEmits(['search']);
+
+const search = (event) => {
+  emit('search', event.target.value);
 };
 </script>
 
