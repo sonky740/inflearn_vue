@@ -5,7 +5,7 @@
   </main>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue';
 
 import USER_DATA from './dummy-data.js';
@@ -13,22 +13,12 @@ import USER_DATA from './dummy-data.js';
 import UserList from './components/users/UserList.vue';
 import ProjectsList from './components/projects/ProjectsList.vue';
 
-export default {
-  components: {
-    UserList,
-    ProjectsList,
-  },
-  setup() {
-    const selectedUser = ref(null);
-    const activeUsers = USER_DATA;
+const selectedUser = ref(null);
+const activeUsers = USER_DATA;
 
-    function selectUser(uid) {
-      selectedUser.value = activeUsers.find((usr) => usr.id === uid);
-    }
-
-    return { selectedUser, activeUsers, selectUser };
-  },
-};
+function selectUser(uid) {
+  selectedUser.value = activeUsers.find((usr) => usr.id === uid);
+}
 </script>
 
 <style>
